@@ -69,16 +69,20 @@ A comprehensive code review identified 7 issues. All were resolved:
 6. **Unused test imports removed** — `pytest`, `math`, `asyncio` cleaned from 4 test files
 7. **Massive test mocks fixed** — `source._client` set in tests, patches target correct names
 
-## Demo
+## Demos
 
-A Rich terminal demo is available at `backend/market_data_demo.py`:
+Two standalone demos exercise the subsystem end-to-end:
 
 ```bash
 cd backend
-uv run market_data_demo.py
+uv run market_data_demo.py          # Rich full-screen dashboard
+uv run market_data_demo_vscode.py   # Scrolling plain-stdout demo (VS Code friendly)
 ```
 
-Displays a live-updating dashboard with all 10 tickers, sparklines, color-coded direction arrows, and an event log for notable price moves. Runs 60 seconds or until Ctrl+C.
+- `market_data_demo.py` displays a live dashboard with all 10 tickers, sparklines, direction arrows, and an event log for notable moves. Best in a regular terminal; uses Rich's alternate-screen mode.
+- `market_data_demo_vscode.py` prints a banner, snapshots, and tick-by-tick updates as ordinary stdout lines. Works in VS Code's integrated terminal **and** the Debug Console (F5 / "Run Python File"). Covers factory selection, source lifecycle, cache version counter, dynamic `add_ticker`/`remove_ticker`, and the `PriceUpdate.to_dict()` SSE payload shape.
+
+Both run with the GBM simulator by default; set `MASSIVE_API_KEY` to switch to real data.
 
 ## Usage for Downstream Code
 

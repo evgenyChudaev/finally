@@ -52,8 +52,14 @@ uv run --extra dev pytest --cov=app       # With coverage
 uv run --extra dev ruff check app/ tests/ # Lint
 ```
 
-## Demo
+## Demos
 
 ```bash
-uv run market_data_demo.py   # Live terminal dashboard with simulated prices
+uv run market_data_demo.py          # Live Rich terminal dashboard (alternate screen)
+uv run market_data_demo_vscode.py   # Scrolling stdout demo (VS Code friendly)
 ```
+
+The `_vscode` variant exists because Rich's `Live(screen=True)` mode does not
+render reliably in VS Code's Debug Console / non-PTY launches. It is a plain
+line-based demo that exercises the same public API (factory, cache, source
+lifecycle, dynamic watchlist, version counter, `to_dict` payload shape).
