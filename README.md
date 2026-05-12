@@ -72,6 +72,26 @@ finally/
 - Frontend unit tests: `npm test` inside `frontend/`
 - E2E: Playwright via `test/docker-compose.test.yml` (runs with `LLM_MOCK=true`)
 
+## Try the Market Data Subsystem in Isolation
+
+Two standalone demos in `backend/` exercise the market data pipeline without
+spinning up the full app — handy if you just want to confirm the simulator
+and price cache work in your environment:
+
+```bash
+cd backend
+uv sync --extra dev
+
+# Full-screen Rich dashboard (best in a regular terminal).
+uv run market_data_demo.py
+
+# Scrolling, plain-stdout demo (best inside VS Code).
+uv run market_data_demo_vscode.py
+```
+
+See [`backend/README.md`](backend/README.md#market-data-demos) for the matching
+VS Code `launch.json` snippet (F5 → "Python: Market Data Demo").
+
 ## License
 
 See [LICENSE](LICENSE).
