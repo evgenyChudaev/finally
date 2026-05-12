@@ -1,4 +1,5 @@
 {
+ 
   "hooks": {
     "Stop": [
       {
@@ -10,8 +11,5 @@
         ]
       }
     ]
-  },
-  "enabledPlugins": {
-    "independent-reviewer@evg-tools": true
   }
 }
