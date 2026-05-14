@@ -20,6 +20,7 @@ from .seed_prices import (
     SEED_PRICES,
     TICKER_PARAMS,
     TSLA_CORR,
+    is_known_ticker,
 )
 
 logger = logging.getLogger(__name__)
@@ -118,9 +119,15 @@ class GBMSimulator:
         return result
 
     def add_ticker(self, ticker: str) -> None:
-        """Add a ticker to the simulation. Rebuilds the correlation matrix."""
+        """Add a ticker to the simulation. Rebuilds the correlation matrix.
+
+        Raises ValueError if `ticker` is not in the simulator's known universe
+        (SEED_PRICES + EXTRA_KNOWN_TICKERS).
+        """
         if ticker in self._prices:
             return
+        if not is_known_ticker(ticker):
+            raise ValueError(f"unknown ticker: {ticker!r}")
         self._add_ticker_internal(ticker)
         self._rebuild_cholesky()
 
@@ -241,6 +248,9 @@ class SimulatorDataSource(MarketDataSource):
 
     async def add_ticker(self, ticker: str) -> None:
         if self._sim:
+            # GBMSimulator.add_ticker raises ValueError for unknown tickers;
+            # let it propagate so the watchlist service translates it into
+            # an UNKNOWN_TICKER 400 response.
             self._sim.add_ticker(ticker)
             # Seed cache immediately so the ticker has a price right away
             price = self._sim.get_price(ticker)

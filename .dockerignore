@@ -1,0 +1,69 @@
+# Version control / CI
+.git
+.github
+.gitignore
+.gitattributes
+
+# Editor / OS noise
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Python build artifacts
+**/__pycache__
+**/*.py[cod]
+**/*.egg-info
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+**/.coverage
+**/htmlcov
+**/.tox
+**/.nox
+
+# Virtualenvs (host-side; the image creates its own under /opt/venv)
+**/.venv
+**/venv
+**/env
+
+# Node / Next.js intermediates — the multi-stage build creates these
+# inside the builder stage, never copied into the runtime image.
+**/node_modules
+frontend/.next
+frontend/out
+frontend/.turbo
+frontend/.next-build
+
+# Runtime SQLite — bind-mounted at runtime, must not be baked into image
+db/finally.db
+db/*.db
+db/*.db-journal
+db/*.db-wal
+db/*.db-shm
+
+# Local environment files (.env.example is intentionally NOT excluded;
+# .env is gitignored already but we re-list it here for safety).
+.env
+.env.local
+.env.*.local
+
+# Out-of-band repo material — not needed in the image
+planning
+test
+backend/tests
+frontend/__tests__
+frontend/jest.config.js
+frontend/tsconfig.jest.json
+independent-reviewer
+REVIEW.md
+LICENSE
+*.md
+!backend/README.md
+!frontend/README.md
+
+# Docker-internal
+Dockerfile
+.dockerignore
+docker-compose*.yml
+scripts

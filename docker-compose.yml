@@ -1,0 +1,30 @@
+# Optional convenience wrapper around `docker run`. The same image and
+# bind mount are used by scripts/start.sh and scripts/start.ps1.
+#
+# Usage:
+#   docker compose up -d --build      # build + run in background
+#   docker compose logs -f finally    # follow logs
+#   docker compose down               # stop and remove
+#
+# The SQLite file persists under ./db on the host (bind mount).
+
+services:
+  finally:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: finally:latest
+    container_name: finally
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./db:/app/db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3

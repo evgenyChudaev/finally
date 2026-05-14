@@ -41,8 +41,21 @@ The SQLite database is bind-mounted at `./db/finally.db` and persists across res
 ### Manual Docker
 
 ```bash
+# macOS / Linux
 docker build -t finally .
 docker run -v "$(pwd)/db:/app/db" -p 8000:8000 --env-file .env finally
+```
+
+```powershell
+# Windows PowerShell
+docker build -t finally .
+docker run -v "${PWD}/db:/app/db" -p 8000:8000 --env-file .env finally
+```
+
+Verify the running container:
+
+```bash
+curl -fsS http://localhost:8000/api/health   # → {"status":"ok"}
 ```
 
 ## Environment Variables
@@ -53,6 +66,7 @@ docker run -v "$(pwd)/db:/app/db" -p 8000:8000 --env-file .env finally
 | `MASSIVE_API_KEY` | No | Massive/Polygon key for real market data; omit to use the simulator |
 | `LLM_MOCK` | No | Set `true` for deterministic mock LLM responses (testing) |
 | `DEFAULT_WATCHLIST` | No | Comma-separated tickers to seed a fresh database |
+| `LOG_LEVEL` | No | `debug` / `info` (default) / `warning` / `error` |
 
 ## Project Structure
 

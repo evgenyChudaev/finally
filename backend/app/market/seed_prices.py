@@ -33,6 +33,24 @@ TICKER_PARAMS: dict[str, dict[str, float]] = {
 # Default parameters for tickers not in the list above (dynamically added)
 DEFAULT_PARAMS: dict[str, float] = {"sigma": 0.25, "mu": 0.05}
 
+# Extra tickers the simulator recognizes as "known" even though they are not in
+# the default seed watchlist. Adding any of these via POST /api/watchlist (or via
+# the LLM) succeeds — a random-but-realistic starting price is generated. Tickers
+# NOT in this set and NOT in SEED_PRICES are rejected with 400 UNKNOWN_TICKER.
+EXTRA_KNOWN_TICKERS: set[str] = {
+    "PYPL", "DIS", "BA", "GS", "MS", "WMT", "KO", "PEP", "MCD", "INTC",
+    "AMD", "CRM", "ADBE", "ORCL", "CSCO", "IBM", "T", "VZ", "XOM", "CVX",
+    "BAC", "WFC", "C", "AXP", "SQ", "SHOP", "UBER", "LYFT", "ABNB", "SNAP",
+    "PINS", "TWTR", "RBLX", "PLTR", "COIN", "HOOD", "F", "GM", "RIVN", "LCID",
+    "NIO", "BABA", "JD", "PDD", "TSM", "ASML", "QCOM", "TXN", "MU", "NKE",
+    "SBUX", "TGT", "COST", "HD", "LOW", "UPS", "FDX", "DAL", "UAL", "AAL",
+}
+
+def is_known_ticker(ticker: str) -> bool:
+    """Return True iff `ticker` is in the simulator's known universe."""
+    t = ticker.strip().upper()
+    return t in SEED_PRICES or t in EXTRA_KNOWN_TICKERS
+
 # Correlation groups for the simulator's Cholesky decomposition
 # Tickers in the same group have higher intra-group correlation
 CORRELATION_GROUPS: dict[str, set[str]] = {
