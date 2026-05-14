@@ -1,17 +1,1 @@
-{
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "codex exec \"Review changes since last commit and write results to a file named REVIEW.md\""
-          }
-        ]
-      }
-    ]
-  },
-  "enabledPlugins": {
-    "independent-reviewer@evg-tools": true
-  }
-}
+
